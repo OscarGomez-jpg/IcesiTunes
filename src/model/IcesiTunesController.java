@@ -8,41 +8,43 @@ public class IcesiTunesController {
     }
 
     /**
-     * This function adds an artist to the main application
+     * This function adds a Producer user that can be of type artist or content
+     * creator to the
+     * main application
      * 
-     * @param nickname Artist's nickname
-     * @param id       Artist's id
-     * @param name     Artist's name
-     * @param url      Artist's profile photo url
-     * 
-     * @return String with the result of the operation
+     * @param type     Producer user's name
+     * @param nickname Producer user's
+     * @param id       Producer user's
+     * @param name     Producer user's
+     * @param url      Producer user's
+     * @return String validating the operation
      */
-    public String addArtist(String nickname, String id, String name, String url) {
-        String msg = "No se ha podido agregar el artista";
+    public String addProducerUser(int type, String nickname, String id, String name, String url) {
+        String msg = "No se ha podido agregar el productor";
 
-        ProducerUser newArtist = new Artist(nickname, id, name, url);
+        System.out.println(type);
 
-        msg = icesiTunes.addProducerUser(newArtist);
+        switch (type) {
+
+            case 1: {
+                ProducerUser newProducer = new Artist(nickname, id, name, url);
+                msg = icesiTunes.addProducerUser(newProducer);
+                break;
+            }
+
+            case 2: {
+                ProducerUser newProducer = new ContentCreator(nickname, id, name, url);
+                msg = icesiTunes.addProducerUser(newProducer);
+                break;
+            }
+
+            default: {
+                msg = "Ingrese un valor valido";
+                break;
+            }
+        }
 
         return msg;
     }
 
-    /**
-     * This function adds a content creator to the main application
-     * 
-     * @param nickname Content creator's nickname
-     * @param id       Content creator's id
-     * @param name     Content creator's name
-     * @param url      Content creator's profile photo url
-     * @return String with the result of the operation
-     */
-    public String addContentCreator(String nickname, String id, String name, String url) {
-        String msg = "No se ha podido agregar el creador de contenido";
-
-        ProducerUser newContentCreator = new ContentCreator(nickname, id, name, url);
-
-        msg = icesiTunes.addProducerUser(newContentCreator);
-
-        return msg;
-    }
 }

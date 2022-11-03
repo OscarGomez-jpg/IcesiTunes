@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.IcesiTunesController;
@@ -89,12 +90,11 @@ public class Main {
 
         switch (option) {
             case 1:
-                msg = uiAddArtist();
+                msg = uiAddUserProducer();
                 System.out.println(msg);
                 break;
 
             case 2:
-                msg = uiAddContentCreator();
                 System.out.println(msg);
                 break;
 
@@ -120,42 +120,37 @@ public class Main {
         }
     }
 
-    public String uiAddArtist() {
+    /**
+     * This function adds a producer user to the system
+     * 
+     * @return A String validating the operation
+     */
+    public String uiAddUserProducer() {
         String msg = "";
 
-        System.out.println("Ingrese el nickname: ");
-        String nickname = reader.next();
-
-        System.out.println("Ingrese el identificador del artista: ");
-        String id = reader.next();
-
-        System.out.println("Ingrese el nombre del artista: ");
-        String name = reader.next();
-
-        System.out.println("Ingrese la url de la foto de perfil: ");
-        String url = reader.next();
-
-        msg = controller.addArtist(nickname, id, name, url);
-
-        return msg;
-    }
-
-    public String uiAddContentCreator() {
-        String msg = "";
-
-        System.out.println("Ingrese el nickname: ");
-        String nickname = reader.next();
-
-        System.out.println("Ingrese el identificador del creador de contenido: ");
-        String id = reader.next();
-
-        System.out.println("Ingrese el nombre del creador de contenido: ");
-        String name = reader.next();
-
-        System.out.println("Ingrese la url de la foto de perfil: ");
-        String url = reader.next();
-
-        msg = controller.addContentCreator(nickname, id, name, url);
+        try {    
+            System.out.println("Ingrese el tipo de productor que quiere agregar:\n" +
+                                "1. Artista\n" + 
+                                "2. Creador de contenido");
+            int type = reader.nextInt();
+    
+            System.out.println("Ingrese el nickname: ");
+            String nickname = reader.next();
+    
+            System.out.println("Ingrese el identificador del artista: ");
+            String id = reader.next();
+    
+            System.out.println("Ingrese el nombre del artista: ");
+            String name = reader.next();
+    
+            System.out.println("Ingrese la url de la foto de perfil: ");
+            String url = reader.next();
+    
+            msg = controller.addProducerUser(type, nickname, id, name, url);
+        } catch (Exception error) {
+            msg = "Por favor ingrese un numero";
+            reader.next();
+        }
 
         return msg;
     }
