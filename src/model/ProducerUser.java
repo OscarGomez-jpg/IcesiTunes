@@ -1,18 +1,21 @@
 package model;
 
+import java.time.LocalTime;
+
 public abstract class ProducerUser extends User {
     private String name;
     private String url;
-    private int total;
+    private int totalReproductions;
 
-    
-    //Tiempo de reproducción
-    //Total de reproducciones
-    
+    // Acumulative reproductions in seconds
+    private LocalTime totalTimeReproduced;
+
     public ProducerUser(String nickname, String id, String name, String url) {
         super(nickname, id);
         this.name = name;
         this.url = url;
+        this.totalReproductions = 0;
+        this.totalTimeReproduced = LocalTime.of(00, 00, 00);
     }
 
     public String getName() {
@@ -30,4 +33,21 @@ public abstract class ProducerUser extends User {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public int getTotalReproductions() {
+        return totalReproductions;
+    }
+
+    public void setTotalReproductions(int totalReproductions) {
+        this.totalReproductions = totalReproductions;
+    }
+
+    public LocalTime getTotalTimeReproduced() {
+        return totalTimeReproduced;
+    }
+
+    public void addTotalTimeReproduced(Long totalTimeReproduced) {
+        this.totalTimeReproduced.plusSeconds(totalReproductions);
+    }
+
 }

@@ -76,8 +76,8 @@ public class Main {
                 "<< --------------------------------------------------------------------- >>\n" +
                 "<< -                                Welcome                            - >>\n" +
                 "<< --------------------------------------------------------------------- >>\n" +
-                "1. Registrar edificio \n" +
-                "2. Agregar un apartamento a un edificio \n" +
+                "1. Agregar artista \n" +
+                "2. Agregar creador de contenido \n" +
                 "3. Agregar propietario\n" +
                 "4. Agregar apartamento a un propietario\n" +
                 "5. Agregar arrendatario\n" +
@@ -89,10 +89,12 @@ public class Main {
 
         switch (option) {
             case 1:
+                msg = uiAddArtist();
                 System.out.println(msg);
                 break;
 
             case 2:
+                msg = uiAddContentCreator();
                 System.out.println(msg);
                 break;
 
@@ -116,5 +118,45 @@ public class Main {
                 System.out.println("Invalid Option");
                 break;
         }
+    }
+
+    public String uiAddArtist() {
+        String msg = "";
+
+        System.out.println("Ingrese el nickname: ");
+        String nickname = reader.next();
+
+        System.out.println("Ingrese el identificador del artista: ");
+        String id = reader.next();
+
+        System.out.println("Ingrese el nombre del artista: ");
+        String name = reader.next();
+
+        System.out.println("Ingrese la url de la foto de perfil: ");
+        String url = reader.next();
+
+        msg = controller.addArtist(nickname, id, name, url);
+
+        return msg;
+    }
+
+    public String uiAddContentCreator() {
+        String msg = "";
+
+        System.out.println("Ingrese el nickname: ");
+        String nickname = reader.next();
+
+        System.out.println("Ingrese el identificador del creador de contenido: ");
+        String id = reader.next();
+
+        System.out.println("Ingrese el nombre del creador de contenido: ");
+        String name = reader.next();
+
+        System.out.println("Ingrese la url de la foto de perfil: ");
+        String url = reader.next();
+
+        msg = controller.addContentCreator(nickname, id, name, url);
+
+        return msg;
     }
 }
