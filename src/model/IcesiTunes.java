@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class IcesiTunes {
     
     private ArrayList<ProducerUser> producers;
+    private ArrayList<Audio> audios;
 
     public IcesiTunes() {
         this.producers = new ArrayList<ProducerUser>();
+        this.audios = new ArrayList<Audio>();
     }
 
     public int searchProducerById(String producerId) {

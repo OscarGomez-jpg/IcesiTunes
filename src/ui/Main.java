@@ -154,4 +154,9 @@ public class Main {
 
         return msg;
     }
+
+    public String uiAddUserConsumer() {
+        String msg = "";
+        return msg;
+    }
 }

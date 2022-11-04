@@ -6,8 +6,6 @@ public abstract class ProducerUser extends User {
     private String name;
     private String url;
     private int totalReproductions;
-
-    // Acumulative reproductions in seconds
     private LocalTime totalTimeReproduced;
 
     public ProducerUser(String nickname, String id, String name, String url) {
@@ -46,8 +44,8 @@ public abstract class ProducerUser extends User {
         return totalTimeReproduced;
     }
 
-    public void addTotalTimeReproduced(Long totalTimeReproduced) {
-        this.totalTimeReproduced.plusSeconds(totalReproductions);
+    public void setTotalTimeReproduced(LocalTime totalTimeReproduced) {
+        this.totalTimeReproduced = totalTimeReproduced;
     }
 
 }
