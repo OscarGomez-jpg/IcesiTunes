@@ -22,19 +22,17 @@ public class IcesiTunesController {
     public String addProducerUser(int type, String nickname, String id, String name, String url) {
         String msg = "No se ha podido agregar el productor";
 
-        System.out.println(type);
-
         switch (type) {
 
             case 1: {
-                ProducerUser newProducer = new Artist(nickname, id, name, url);
-                msg = icesiTunes.addProducerUser(newProducer);
+                User newProducer = new Artist(nickname, id, name, url);
+                msg = icesiTunes.addUser(newProducer);
                 break;
             }
 
             case 2: {
-                ProducerUser newProducer = new ContentCreator(nickname, id, name, url);
-                msg = icesiTunes.addProducerUser(newProducer);
+                User newProducer = new ContentCreator(nickname, id, name, url);
+                msg = icesiTunes.addUser(newProducer);
                 break;
             }
 
@@ -47,4 +45,40 @@ public class IcesiTunesController {
         return msg;
     }
 
+    /**
+     * This function adds a Consumer user to the main application. This function
+     * builds the
+     * Consumer user by parameters given by the user and adds a standard or premium
+     * user depending on the type given given by the user.
+     * 
+     * @param type     int type that differentiates the standard from the premium
+     * @param nickname User's nickname
+     * @param id       User's id
+     * @return A String validating the operation
+     */
+    public String addConsumerUser(int type, String nickname, String id) {
+        String msg = "No se ha podido agregar el usuario";
+
+        switch (type) {
+
+            case 1: {
+                User newConsumer = new PremiumUser(nickname, id);
+                msg = icesiTunes.addUser(newConsumer);
+                break;
+            }
+
+            case 2: {
+                User newConsumer = new StandardUser(nickname, id);
+                msg = icesiTunes.addUser(newConsumer);
+                break;
+            }
+
+            default: {
+                msg = "Ingrese un valor valido";
+                break;
+            }
+        }
+
+        return msg;
+    }
 }

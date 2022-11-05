@@ -90,11 +90,12 @@ public class Main {
 
         switch (option) {
             case 1:
-                msg = uiAddUserProducer();
+                msg = uiAddProducerUser();
                 System.out.println(msg);
                 break;
 
             case 2:
+                msg = uiAddConsumerUser();
                 System.out.println(msg);
                 break;
 
@@ -125,27 +126,27 @@ public class Main {
      * 
      * @return A String validating the operation
      */
-    public String uiAddUserProducer() {
+    public String uiAddProducerUser() {
         String msg = "";
 
-        try {    
+        try {
             System.out.println("Ingrese el tipo de productor que quiere agregar:\n" +
-                                "1. Artista\n" + 
-                                "2. Creador de contenido");
+                    "1. Artista\n" +
+                    "2. Creador de contenido");
             int type = reader.nextInt();
-    
+
             System.out.println("Ingrese el nickname: ");
             String nickname = reader.next();
-    
+
             System.out.println("Ingrese el identificador del artista: ");
             String id = reader.next();
-    
+
             System.out.println("Ingrese el nombre del artista: ");
             String name = reader.next();
-    
+
             System.out.println("Ingrese la url de la foto de perfil: ");
             String url = reader.next();
-    
+
             msg = controller.addProducerUser(type, nickname, id, name, url);
         } catch (Exception error) {
             msg = "Por favor ingrese un numero";
@@ -155,8 +156,32 @@ public class Main {
         return msg;
     }
 
-    public String uiAddUserConsumer() {
+    /**
+     * This function adds a Consumer user to the system
+     * 
+     * @return A message validating the operation
+     */
+    public String uiAddConsumerUser() {
         String msg = "";
+
+        try {
+            System.out.println("Ingrese el tipo de usuario que quiere agregar:\n" +
+                    "1. Standard\n" +
+                    "2. Premium");
+            int type = reader.nextInt();
+
+            System.out.println("Ingrese el nickname: ");
+            String nickname = reader.next();
+
+            System.out.println("Ingrese el identificador del usuario: ");
+            String id = reader.next();
+
+            msg = controller.addConsumerUser(type, nickname, id);
+        } catch (Exception error) {
+            msg = "Por favor ingrese un numero";
+            reader.next();
+        }
+
         return msg;
     }
 }

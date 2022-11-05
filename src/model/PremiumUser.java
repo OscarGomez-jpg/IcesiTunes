@@ -1,9 +1,9 @@
 package model;
 
 
-public class PremiumUsers extends ConsumerUser {
+public class PremiumUser extends ConsumerUser {
 
-    public PremiumUsers(String nickname, String id) {
+    public PremiumUser(String nickname, String id) {
         super(nickname, id);
         //TODO Auto-generated constructor stub
     }

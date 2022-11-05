@@ -41,8 +41,40 @@ public class Playlist {
         return msg;
     }
 
-    public String deleteAudio(Audio audio) {
+    /**
+     * This function search the song in the playlist and returns its position
+     * if the song is not found it will return -1
+     * 
+     * @param audioName The audio's name that is going to be searched
+     * @return The position where the audio is found
+     */
+    public int getAudioPos(String audioName) {
+        int pos = -1;
+        boolean isFound = false;
+
+        for (int i = 0; i < songs.size() && isFound == false; i++) {
+            if (songs.get(i).getName().equals(audioName)) {
+                pos = i;
+                isFound = true;
+            }
+        }
+
+        return pos;
+    }
+
+    /**
+     * This function deletes the first occurence of a song in the arraylist
+     * 
+     * @param audioName Audio's name
+     * @return A String validating the confirmation
+     */
+    public String deleteAudio(String audioName) {
         String msg = "Audio eliminado con exito";
+
+        int pos = getAudioPos(audioName);
+
+        songs.remove(pos);
+
         return msg;
     }
 
