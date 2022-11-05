@@ -77,8 +77,8 @@ public class Main {
                 "<< --------------------------------------------------------------------- >>\n" +
                 "<< -                                Welcome                            - >>\n" +
                 "<< --------------------------------------------------------------------- >>\n" +
-                "1. Agregar artista \n" +
-                "2. Agregar creador de contenido \n" +
+                "1. Agregar Productor \n" +
+                "2. Agregar Consumidor \n" +
                 "3. Agregar propietario\n" +
                 "4. Agregar apartamento a un propietario\n" +
                 "5. Agregar arrendatario\n" +
