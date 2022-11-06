@@ -81,4 +81,64 @@ public class IcesiTunesController {
 
         return msg;
     }
+
+    /**
+     * This function adds an audio file of type Song to the main application
+     * 
+     * @param name      Song's name
+     * @param authorsId Song's id
+     * @param url       Song's url album cover
+     * @param duration  Song's duration as a String formatted as hh:mm:ss
+     * @param price     Song's price
+     * @param genre     Song's genre
+     * 
+     * @return A String with the result of the operation
+     */
+    public String addAudioFile(String name, String authorsId, String url, String duration, double price, int genre) {
+        String msg = "No se ha podido agregar el archivo";
+
+        int authorsPos = icesiTunes.searchUserById(authorsId);
+
+        if (authorsPos == -1) {
+            msg = "No se ha podido encontrar el autor";
+            return msg;
+        }
+
+        String author = ((Artist) (icesiTunes.getUsers().get(authorsPos))).getName();
+
+        Audio newAudio = new Song(name, author, url, duration, price, genre);
+
+        msg = icesiTunes.addAudioFile(newAudio);
+
+        return msg;
+    }
+
+    /**
+     * This function adds an audio of instance Podcast to the main application
+     * 
+     * @param name      The podcast's name
+     * @param url       The podcast image url
+     * @param authorsId The podcast author's id
+     * @param duration  The podcast duration as a String
+     * @param category  The podcast category
+     * @return A String with the result of the operation
+     */
+    public String addAudioFile(String name, String url, String authorsId, String duration, int category) {
+        String msg = "No se ha podido agregar el archivo";
+
+        int authorsPos = icesiTunes.searchUserById(authorsId);
+
+        if (authorsPos == -1) {
+            msg = "No se ha podido encontrar el autor";
+            return msg;
+        }
+
+        String author = ((ContentCreator)(icesiTunes.getUsers().get(authorsPos))).getName();
+
+        Audio newAudio = new Podcast(name, url, author, duration, category);
+
+        msg = icesiTunes.addAudioFile(newAudio);
+
+        return msg;
+    }
 }

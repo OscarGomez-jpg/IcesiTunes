@@ -1,16 +1,18 @@
 package model;
 
-import java.time.LocalTime;
+import java.time.Duration;
 
 public class Audio {
     private String name;
     private String url;
-    private LocalTime duration;
+    private String author;
+    private Duration duration;
 
-    public Audio(String name, String url, String duration) {
+    public Audio(String name, String url, String author, String duration) {
         this.name = name;
         this.url = url;
-        this.duration = LocalTime.parse(duration);
+        this.author = author;
+        this.duration = Duration.parse(duration);
     }
 
     public String getName() {
@@ -29,11 +31,20 @@ public class Audio {
         this.url = url;
     }
 
-    public LocalTime getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
 }

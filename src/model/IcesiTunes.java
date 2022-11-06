@@ -33,7 +33,28 @@ public class IcesiTunes {
     }
 
     /**
-     * This function receives an User by parameter and adds it to the main application
+     * This function search an AudioFile by its name
+     * 
+     * @param audioName The audio's name
+     * @return An int with the audio's position
+     */
+    public int searchAudioByName(String audioName) {
+        int pos = -1;
+        boolean isFound = false;
+
+        for (int i = 0; i < audios.size() && isFound == false; i++) {
+            if (audios.get(i).getName().equals(audioName)) {
+                pos = i;
+                isFound = true;
+            }
+        }
+
+        return pos;
+    }
+
+    /**
+     * This function receives an User by parameter and adds it to the main
+     * application
      * 
      * @param user
      * @return
@@ -43,14 +64,52 @@ public class IcesiTunes {
 
         if (searchUserById(user.getId()) != -1) {
             msg = "El Usuario ya existe dentro del sistema";
+
+            return msg;
         }
 
         boolean result = users.add(user);
 
         if (result == false) {
             msg = "No se ha podido agregar el Usuario";
+
+            return msg;
         }
 
         return msg;
+    }
+
+    /**
+     * This function adds an audio file to the main application
+     * 
+     * @param audio The Audio to be added
+     * @return A String with the result of the operation
+     */
+    public String addAudioFile(Audio audio) {
+        String msg = "Archivo agregado con exito";
+
+        if (searchAudioByName(audio.getName()) != -1) {
+            msg = "La cancion ya existe dentro del sistema";
+
+            return msg;
+        }
+
+        boolean result = audios.add(audio);
+
+        if (result == false) {
+            msg = "No se ha podido agregar el usuario";
+
+            return msg;
+        }
+
+        return msg;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public ArrayList<Audio> getAudios() {
+        return audios;
     }
 }

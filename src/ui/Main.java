@@ -1,6 +1,5 @@
 package ui;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.IcesiTunesController;
@@ -63,6 +62,12 @@ public class Main {
         return option;
     }
 
+    public String formatDuration(int hours, int minutes, int seconds) {
+        String msg = "";
+        msg = hours + ":" + minutes + ":" + seconds;
+        return msg;
+    }
+
     public int getOptionShowMenu() {
         int option = 0;
         System.out.println(printMenu());
@@ -79,8 +84,8 @@ public class Main {
                 "<< --------------------------------------------------------------------- >>\n" +
                 "1. Agregar Productor \n" +
                 "2. Agregar Consumidor \n" +
-                "3. Agregar propietario\n" +
-                "4. Agregar apartamento a un propietario\n" +
+                "3. Agregar cancion\n" +
+                "4. Agregar Podcast\n" +
                 "5. Agregar arrendatario\n" +
                 "0. Salir del programa.\n";
     }
@@ -100,6 +105,7 @@ public class Main {
                 break;
 
             case 3:
+                msg = uiAddSongFile();
                 System.out.println(msg);
                 break;
 
@@ -180,6 +186,103 @@ public class Main {
         } catch (Exception error) {
             msg = "Por favor ingrese un numero";
             reader.next();
+        }
+
+        return msg;
+    }
+
+    /**
+     * This function adds a song to the system
+     * 
+     * @return a String with the result of the operation
+     */
+    public String uiAddSongFile() {
+        String msg = "";
+
+        try {
+
+            System.out.println("Ingrese el nombre de la cancion: ");
+            String name = reader.next();
+
+            System.out.println("Ingrese el link de la portada: ");
+            String url = reader.next();
+
+            System.out.println("Ingrese el id del autor: ");
+            String authorsId = reader.next();
+
+            System.out.println("Ingrese las horas de la cancion: ");
+            int hours = reader.nextInt();
+
+            System.out.println("Ingrese los minutos de la cancion: ");
+            int minutes = reader.nextInt();
+
+            System.out.println("Ingrese los segundos de la cancion: ");
+            int seconds = reader.nextInt();
+
+            String duration = formatDuration(hours, minutes, seconds);
+
+            System.out.println("Ingrese el precio de la cancion: ");
+            double price = reader.nextDouble();
+
+            System.out.println("Ingrese el genero de la cancion: \n" +
+                    "1. Rock\n" +
+                    "2. Pop\n" +
+                    "3. Trap\n" +
+                    "4. House");
+
+            int type = reader.nextInt();
+
+            msg = controller.addAudioFile(name, authorsId, url, duration, price, type);
+
+        } catch (Exception error) {
+            msg = "Ingrese un valor valido";
+        }
+
+        return msg;
+    }
+
+    /**
+     * This function adds a podcast to the system
+     * 
+     * @return A String with the resul of the operation
+     */
+    public String uiAddPodcastFile() {
+        String msg = "";
+
+        try {
+
+            System.out.println("Ingrese el nombre del podcast: ");
+            String name = reader.next();
+
+            System.out.println("Ingrese el link de la portada: ");
+            String url = reader.next();
+
+            System.out.println("Ingrese el id del autor: ");
+            String authorsId = reader.next();
+
+            System.out.println("Ingrese las horas del podcast: ");
+            int hours = reader.nextInt();
+
+            System.out.println("Ingrese los minutos del podcast: ");
+            int minutes = reader.nextInt();
+
+            System.out.println("Ingrese los segundos del podcast: ");
+            int seconds = reader.nextInt();
+
+            String duration = formatDuration(hours, minutes, seconds);
+
+            System.out.println("Ingrese la categoria del podcast: \n" +
+                    "1. Politica\n" +
+                    "2. Entretenimiento\n" +
+                    "3. Videojuegos\n" +
+                    "4. Moda");
+
+            int type = reader.nextInt();
+
+            msg = controller.addAudioFile(name, url, authorsId, duration, type);
+
+        } catch (Exception error) {
+            msg = "Ingrese un valor valido";
         }
 
         return msg;

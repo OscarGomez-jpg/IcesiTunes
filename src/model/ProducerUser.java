@@ -1,19 +1,19 @@
 package model;
 
-import java.time.LocalTime;
+import java.time.Duration;
 
 public abstract class ProducerUser extends User {
     private String name;
     private String url;
     private int totalReproductions;
-    private LocalTime totalTimeReproduced;
+    private Duration totalTimeReproduced;
 
     public ProducerUser(String nickname, String id, String name, String url) {
         super(nickname, id);
         this.name = name;
         this.url = url;
         this.totalReproductions = 0;
-        this.totalTimeReproduced = LocalTime.of(00, 00, 00);
+        this.totalTimeReproduced = Duration.ofSeconds(00);
     }
 
     public String getName() {
@@ -40,11 +40,11 @@ public abstract class ProducerUser extends User {
         this.totalReproductions = totalReproductions;
     }
 
-    public LocalTime getTotalTimeReproduced() {
+    public Duration getTotalTimeReproduced() {
         return totalTimeReproduced;
     }
 
-    public void setTotalTimeReproduced(LocalTime totalTimeReproduced) {
+    public void setTotalTimeReproduced(Duration totalTimeReproduced) {
         this.totalTimeReproduced = totalTimeReproduced;
     }
 

@@ -4,8 +4,8 @@ public class Song extends Audio {
     private double price;
     private Genre genre;
 
-    public Song(String name, String url, String duration, double price, int genre) {
-        super(name, url, duration);
+    public Song(String name, String author, String url, String duration, double price, int genre) {
+        super(name, url, author, duration);
         this.price = price;
         this.genre = Genre.values()[genre];
     }
