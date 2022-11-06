@@ -23,7 +23,7 @@ public class IcesiTunes {
         boolean isFound = false;
 
         for (int i = 0; i < users.size() && isFound == false; i++) {
-            if (users.get(i).getId() == userId) {
+            if (users.get(i).getId().equals(userId)) {
                 pos = i;
                 isFound = true;
             }
@@ -97,10 +97,32 @@ public class IcesiTunes {
         boolean result = audios.add(audio);
 
         if (result == false) {
-            msg = "No se ha podido agregar el usuario";
+            msg = "No se ha podido agregar la cancion";
 
             return msg;
         }
+
+        return msg;
+    }
+
+    /**
+     * This function adds a playlist of type Playlist to an existing user
+     * 
+     * @param userId The user's id
+     * @param playlist The playlist to be added
+     * @return A String with the result of the operation
+     */
+    public String addPlaylistToUser(String userId, Playlist playlist) {
+        String msg = "No se ha podido agregar la playlist";
+
+        int userPos = searchUserById(userId);
+
+        if (userPos == -1) {
+            msg = "No se ha encontrado al usuario";
+            return msg;
+        }
+
+        msg = ((ConsumerUser)(users.get(userPos))).addPlaylist(playlist);
 
         return msg;
     }

@@ -4,16 +4,37 @@ import java.util.ArrayList;
 
 public abstract class ConsumerUser extends User {
 
-    private ArrayList<String> idSongs;
+    private ArrayList<Playlist> playlists;
+    private Playlist userAudios;
 
     public ConsumerUser(String nickname, String id) {
         super(nickname, id);
-        idSongs = new ArrayList<String>();
+        this.playlists = new ArrayList<Playlist>();
+        this.userAudios = new Playlist(nickname);
     }
     
-    public abstract String addSong(String idSong);
+    /**
+     * This function will add an audio that can be either a song or a podcast to 
+     * a consumer user
+     * 
+     * @param audio The audio to be added
+     * @return A String with the result of the operation
+     */
+    public abstract String addAudio(Audio audio);
 
-    public ArrayList<String> getIdSongs() {
-        return idSongs;
+    /**
+     * This function will add a Playlist to a consumer user
+     * 
+     * @param playlist
+     * @return A String with the result of the operation
+     */
+    public abstract String addPlaylist(Playlist playlist);
+
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public Playlist getUserAudios() {
+        return userAudios;
     }
 }

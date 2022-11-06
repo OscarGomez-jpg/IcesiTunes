@@ -1,5 +1,7 @@
 package ui;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import model.IcesiTunesController;
@@ -64,7 +66,7 @@ public class Main {
 
     public String formatDuration(int hours, int minutes, int seconds) {
         String msg = "";
-        msg = hours + ":" + minutes + ":" + seconds;
+        msg = "PT" + hours + "H" + minutes + "M" + seconds + "S";
         return msg;
     }
 
@@ -86,7 +88,7 @@ public class Main {
                 "2. Agregar Consumidor \n" +
                 "3. Agregar cancion\n" +
                 "4. Agregar Podcast\n" +
-                "5. Agregar arrendatario\n" +
+                "5. Agregar Playlist\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -110,10 +112,12 @@ public class Main {
                 break;
 
             case 4:
+                msg = uiAddPodcastFile();
                 System.out.println(msg);
                 break;
 
             case 5:
+                msg = uiAddPlaylist();
                 System.out.println(msg);
                 break;
 
@@ -236,6 +240,7 @@ public class Main {
 
         } catch (Exception error) {
             msg = "Ingrese un valor valido";
+            reader.next();
         }
 
         return msg;
@@ -283,7 +288,27 @@ public class Main {
 
         } catch (Exception error) {
             msg = "Ingrese un valor valido";
+            reader.next();
         }
+
+        return msg;
+    }
+
+    /**
+     * This function rececives the paramaters to add a playlist to the system
+     * 
+     * @return A String with the result of the operation
+     */
+    public String uiAddPlaylist() {
+        String msg = "";
+
+        System.out.println("Ingrese el id del usuario al que va a agregar la lista: ");
+        String userId = reader.next();
+
+        System.out.println("Ingrese el nombre que va a llevar la lista: ");
+        String playlistName = reader.next();
+
+        msg = controller.addPlaylistToUser(userId, playlistName);
 
         return msg;
     }

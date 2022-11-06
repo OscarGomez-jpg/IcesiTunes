@@ -104,6 +104,11 @@ public class IcesiTunesController {
             return msg;
         }
 
+        if (icesiTunes.getUsers().get(authorsPos) instanceof Artist == false) {
+            msg = "No se le puede agregar una cancion a un autor que no es un artista";
+            return msg;
+        }
+
         String author = ((Artist) (icesiTunes.getUsers().get(authorsPos))).getName();
 
         Audio newAudio = new Song(name, author, url, duration, price, genre);
@@ -133,11 +138,33 @@ public class IcesiTunesController {
             return msg;
         }
 
-        String author = ((ContentCreator)(icesiTunes.getUsers().get(authorsPos))).getName();
+        if (icesiTunes.getUsers().get(authorsPos) instanceof ContentCreator == false) {
+            msg = "No se le puede agregar un podcast a un autor que no es un creador de contenido";
+            return msg;
+        }
+
+        String author = ((ContentCreator) (icesiTunes.getUsers().get(authorsPos))).getName();
 
         Audio newAudio = new Podcast(name, url, author, duration, category);
 
         msg = icesiTunes.addAudioFile(newAudio);
+
+        return msg;
+    }
+
+    /**
+     * This function build a playlist and send it to the main application
+     * 
+     * @param userId       The user who is going to receive the playlist
+     * @param playlistName The new playlist name
+     * @return A String with the result of the operation
+     */
+    public String addPlaylistToUser(String userId, String playlistName) {
+        String msg = "No se ha podido agregar la playlist";
+
+        Playlist newPlaylist = new Playlist(playlistName);
+
+        msg = icesiTunes.addPlaylistToUser(userId, newPlaylist);
 
         return msg;
     }

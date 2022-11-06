@@ -5,14 +5,22 @@ public class PremiumUser extends ConsumerUser {
 
     public PremiumUser(String nickname, String id) {
         super(nickname, id);
-        //TODO Auto-generated constructor stub
     }
 
     @Override
-    public String addSong(String idSong) {
+    public String addAudio(Audio audio) {
         String msg = "Cancion agregada con exito";
 
-        getIdSongs().add(idSong);
+        getUserAudios().addAudio(audio);
+
+        return msg;
+    }
+
+    @Override
+    public String addPlaylist(Playlist playlist) {
+        String msg = "Playlsit agregada con exito";
+
+        getPlaylists().add(playlist);
 
         return msg;
     }
