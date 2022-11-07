@@ -168,4 +168,120 @@ public class IcesiTunesController {
 
         return msg;
     }
+
+    /**
+     * This function validates and returns the position of the user, playlist and
+     * audio
+     * to add an audio to a playlist
+     * 
+     * @param userId       String user's id
+     * @param playlistName String playlist's name
+     * @param audioName    String song's name
+     * @return A String with the result of the operation
+     */
+    public String addSongToPlaylist(String userId, String playlistName, String audioName) {
+        String msg = "No se ha podido agregar la cancion";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            msg = "No se ha encontrado el usuario";
+            return msg;
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            msg = "Solo los usuarios consumidores tienen playlists";
+            return msg;
+        }
+
+        int playlistPos = icesiTunes.searchUserPlaylist(userId, playlistName);
+
+        if (playlistPos == -1) {
+            msg = "No se ha encontrado la playlist";
+            return msg;
+        }
+
+        int songPos = icesiTunes.searchAudioByName(audioName);
+
+        if (songPos == -1) {
+            msg = "No se ha encontrado el archivo de audio";
+            return msg;
+        }
+
+        msg = icesiTunes.addAudioToPlaylist(userPos, playlistPos, songPos);
+
+        return msg;
+    }
+
+    /**
+     * This function verifies and takes the String of a consumer user, a playlist
+     * and an audio
+     * to return its position
+     * 
+     * @param userId       The user's id
+     * @param playlistName The user's playlist name
+     * @param audioName    The user's audio to be removed
+     * @return A String with the result of the operation
+     */
+    public String removeAudioFromPlaylist(String userId, String playlistName, String audioName) {
+        String msg = "No se ha podido remover el audio de la playlist";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            msg = "No se ha encontrado el usuario";
+            return msg;
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            msg = "Solo los usuarios consumidores tienen playlists";
+            return msg;
+        }
+
+        int playlistPos = icesiTunes.searchUserPlaylist(userId, playlistName);
+
+        if (playlistPos == -1) {
+            msg = "No se ha encontrado la playlist";
+            return msg;
+        }
+
+        msg = icesiTunes.removeAudioFromPlaylist(userPos, playlistPos, audioName);
+
+        return msg;
+    }
+
+    /**
+     * This function verifies and returns the position of a consumer user with its playlist
+     * 
+     * @param userId The user's id
+     * @param playlistName The playlist's name
+     * @param newName The new name of the playlist
+     * @return A String with the result of the operation
+     */
+    public String changePlaylistName(String userId, String playlistName, String newName) {
+        String msg = "No se ha podido modificar el nombre de la playlist";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            msg = "No se ha encontrado el usuario";
+            return msg;
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            msg = "Solo los usuarios consumidores tienen playlists";
+            return msg;
+        }
+
+        int playlistPos = icesiTunes.searchUserPlaylist(userId, playlistName);
+
+        if (playlistPos == -1) {
+            msg = "No se ha encontrado la playlist";
+            return msg;
+        }
+
+        msg = icesiTunes.changePlaylistName(userPos, playlistPos, newName);
+
+        return msg;
+    }
 }

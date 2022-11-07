@@ -53,6 +53,29 @@ public class IcesiTunes {
     }
 
     /**
+     * This function returns the position of a playlist from a user
+     * 
+     * @param userId       Consumer user's id
+     * @param playlistName Playlist's name
+     * @return An int with the position of the playlist
+     */
+    public int searchUserPlaylist(String userId, String playlistName) {
+        int pos = -1;
+        boolean isFound = false;
+        int userPos = searchUserById(userId);
+        ArrayList<Playlist> uPlaylists = ((ConsumerUser) (users.get(userPos))).getPlaylists();
+
+        for (int i = 0; i < uPlaylists.size() && isFound == false; i++) {
+            if (uPlaylists.get(i).getName().equals(playlistName)) {
+                pos = i;
+                isFound = true;
+            }
+        }
+
+        return pos;
+    }
+
+    /**
      * This function receives an User by parameter and adds it to the main
      * application
      * 
@@ -108,7 +131,7 @@ public class IcesiTunes {
     /**
      * This function adds a playlist of type Playlist to an existing user
      * 
-     * @param userId The user's id
+     * @param userId   The user's id
      * @param playlist The playlist to be added
      * @return A String with the result of the operation
      */
@@ -122,7 +145,56 @@ public class IcesiTunes {
             return msg;
         }
 
-        msg = ((ConsumerUser)(users.get(userPos))).addPlaylist(playlist);
+        msg = ((ConsumerUser) (users.get(userPos))).addPlaylist(playlist);
+
+        return msg;
+    }
+
+    /**
+     * This function takes an existing audio file and puts it into a playlist
+     * 
+     * @param userPos     The position of the user that has the playlist
+     * @param playlistPos The playlist position in the user
+     * @param audioPos    Position of the audio that the user wants to add to the
+     *                    playlist
+     * @return A String with the result of the operation
+     */
+    public String addAudioToPlaylist(int userPos, int playlistPos, int audioPos) {
+        String msg = "No se ha podido agregar el audio a la playlist";
+
+        msg = ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).addAudio(audios.get(audioPos));
+
+        return msg;
+    }
+
+    /**
+     * This function removes an existing audio from a playlist
+     * 
+     * @param userPos     The position of the user
+     * @param playlistPos The position of the playlist
+     * @param audioName   The name of the audio to be removed
+     * @return A String with the result of the operation
+     */
+    public String removeAudioFromPlaylist(int userPos, int playlistPos, String audioName) {
+        String msg = "No se ha podido eliminar la cancion de la lista";
+
+        msg = ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).deleteAudio(audioName);
+
+        return msg;
+    }
+
+    /**
+     * This function changes the name of an existing playlist
+     * 
+     * @param userPos     The owner of the playlist position
+     * @param playlistPos The playlist's position
+     * @param newName     The new name of the playlist
+     * @return A String with the result of the operation
+     */
+    public String changePlaylistName(int userPos, int playlistPos, String newName) {
+        String msg = "Nombre modificado con exito";
+
+        ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).setName(newName);
 
         return msg;
     }

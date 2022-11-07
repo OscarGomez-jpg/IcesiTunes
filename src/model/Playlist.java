@@ -73,6 +73,11 @@ public class Playlist {
 
         int pos = getAudioPos(audioName);
 
+        if (pos == -1) {
+            msg = "No se ha encontrado el audio";
+            return msg;
+        }
+
         songs.remove(pos);
 
         return msg;

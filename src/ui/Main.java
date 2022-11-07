@@ -1,7 +1,5 @@
 package ui;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import model.IcesiTunesController;
@@ -89,6 +87,9 @@ public class Main {
                 "3. Agregar cancion\n" +
                 "4. Agregar Podcast\n" +
                 "5. Agregar Playlist\n" +
+                "6. Agregar cancion a Playlist\n" +
+                "7. Remover cancion de Playlist\n" +
+                "8. Cambiar nombre de Playlist\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -118,6 +119,21 @@ public class Main {
 
             case 5:
                 msg = uiAddPlaylist();
+                System.out.println(msg);
+                break;
+
+            case 6:
+                msg = uiAddAudioToPlaylist();
+                System.out.println(msg);
+                break;
+            
+            case 7:
+                msg = uiRemoveAudioFromSong();
+                System.out.println(msg);
+                break;
+
+            case 8:
+                msg = uiChangePlaylistName();
                 System.out.println(msg);
                 break;
 
@@ -309,6 +325,72 @@ public class Main {
         String playlistName = reader.next();
 
         msg = controller.addPlaylistToUser(userId, playlistName);
+
+        return msg;
+    }
+
+    /**
+     * This function receives the parameters to add a song to a playlist
+     * 
+     * @return A String with the result of the operation
+     */
+    public String uiAddAudioToPlaylist() {
+        String msg = "";
+
+        System.out.println("Ingrese el id del usuario: ");
+        String userId = reader.next();
+
+        System.out.println("Ingrese el nombre de la playlist: ");
+        String playlistName = reader.next();
+
+        System.out.println("Ingrese el nombre del audio: ");
+        String audioName = reader.next();
+
+        msg = controller.addSongToPlaylist(userId, playlistName, audioName);
+
+        return msg;
+    }
+
+    /**
+     * This function takes the parameters to delete an audio from a playlist
+     * 
+     * @return A String with the result of the operation
+     */
+    public String uiRemoveAudioFromSong() {
+        String msg = "";
+
+        System.out.println("Ingrese el id del usuario: ");
+        String userId = reader.next();
+
+        System.out.println("Ingrese el nombre de la playlist: ");
+        String playlistName = reader.next();
+
+        System.out.println("Ingrese el nombre del audio: ");
+        String audioName = reader.next();
+
+        msg = controller.removeAudioFromPlaylist(userId, playlistName, audioName);
+
+        return msg;
+    }
+
+    /**
+     * This function takes the parameter to change the name of an existing playlist
+     * 
+     * @return A String with the result of the operation
+     */
+    private String uiChangePlaylistName() {
+        String msg = "";
+
+        System.out.println("Ingrese el id del usuario: ");
+        String userId = reader.next();
+
+        System.out.println("Ingrese el antiguo nombre de la playlist: ");
+        String oldPlaylistName = reader.next();
+
+        System.out.println("Ingrese el nuevo nombre de la playlist: ");
+        String newPlaylistName = reader.next();
+
+        msg = controller.changePlaylistName(userId, oldPlaylistName, newPlaylistName);
 
         return msg;
     }
