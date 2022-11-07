@@ -79,8 +79,8 @@ public class IcesiTunes {
      * This function receives an User by parameter and adds it to the main
      * application
      * 
-     * @param user
-     * @return
+     * @param user The user to be added 
+     * @return A String with the result of the operation
      */
     public String addUser(User user) {
         String msg = "Usuario agregado con exito";

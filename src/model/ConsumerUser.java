@@ -25,7 +25,7 @@ public abstract class ConsumerUser extends User {
     /**
      * This function will add a Playlist to a consumer user
      * 
-     * @param playlist
+     * @param playlist The playlist to be added
      * @return A String with the result of the operation
      */
     public abstract String addPlaylist(Playlist playlist);
