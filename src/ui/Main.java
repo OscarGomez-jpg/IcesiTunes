@@ -87,9 +87,7 @@ public class Main {
                 "3. Agregar cancion\n" +
                 "4. Agregar Podcast\n" +
                 "5. Agregar Playlist\n" +
-                "6. Agregar cancion a Playlist\n" +
-                "7. Remover cancion de Playlist\n" +
-                "8. Cambiar nombre de Playlist\n" +
+                "6. Editar playlist\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -123,17 +121,7 @@ public class Main {
                 break;
 
             case 6:
-                msg = uiAddAudioToPlaylist();
-                System.out.println(msg);
-                break;
-            
-            case 7:
-                msg = uiRemoveAudioFromSong();
-                System.out.println(msg);
-                break;
-
-            case 8:
-                msg = uiChangePlaylistName();
+                msg = uiEditPlaylist();
                 System.out.println(msg);
                 break;
 
@@ -329,6 +317,36 @@ public class Main {
         return msg;
     }
 
+    public String uiEditPlaylist() {
+        String msg = "";
+
+        try {
+            System.out.println("Ingrese un numero del 1 al 3: \n" +
+                    "1. Agregar archivo de audio a playlist\n" + 
+                    "2. Remover archivo de audio a playlist\n" +
+                    "3. Cambiar el nombre de la playlist");
+
+            int selection = reader.nextInt();
+
+            switch (selection){
+                case 1:
+                    msg = uiAddAudioToPlaylist();
+                    break;
+                case 2:
+                    msg = uiRemoveAudioFromPlaylist();
+                    break;
+                case 3:
+                    msg = uiChangePlaylistName();
+                    break;
+            }
+
+        } catch (Exception error) {
+            msg = "Ingrese un valor permitido";
+        }
+
+        return msg;
+    }
+
     /**
      * This function receives the parameters to add a song to a playlist
      * 
@@ -356,7 +374,7 @@ public class Main {
      * 
      * @return A String with the result of the operation
      */
-    public String uiRemoveAudioFromSong() {
+    public String uiRemoveAudioFromPlaylist() {
         String msg = "";
 
         System.out.println("Ingrese el id del usuario: ");
