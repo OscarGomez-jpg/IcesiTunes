@@ -17,7 +17,7 @@ public class Playlist {
     public Playlist(String name) {
         this.random = new Random();
         this.name = name;
-        this.code = "";
+        this.code = "NOT_FOUND";
         this.hasSongs = false;
         this.hasPodcast = false;
         this.songs = new ArrayList<Audio>();

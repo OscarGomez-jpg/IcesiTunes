@@ -87,7 +87,8 @@ public class Main {
                 "3. Agregar cancion\n" +
                 "4. Agregar Podcast\n" +
                 "5. Agregar Playlist\n" +
-                "6. Editar playlist\n" +
+                "6. Editar Playlist\n" +
+                "7. Compartir Playlist\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -122,6 +123,11 @@ public class Main {
 
             case 6:
                 msg = uiEditPlaylist();
+                System.out.println(msg);
+                break;
+            
+            case 7:
+                msg = uiShareCodePlaylist();
                 System.out.println(msg);
                 break;
 
@@ -215,7 +221,11 @@ public class Main {
             System.out.println("Ingrese el link de la portada: ");
             String url = reader.next();
 
-            System.out.println("Ingrese el id del autor: ");
+            System.out.println("Ingrese el nickname del artista: ");
+            String producers = controller.getArtists();
+            
+            System.out.println(producers);
+
             String authorsId = reader.next();
 
             System.out.println("Ingrese las horas de la cancion: ");
@@ -266,7 +276,11 @@ public class Main {
             System.out.println("Ingrese el link de la portada: ");
             String url = reader.next();
 
-            System.out.println("Ingrese el id del autor: ");
+            System.out.println("Ingrese el nickname del creador de contenido: ");
+            String producers = controller.getArtists();
+            
+            System.out.println(producers);
+
             String authorsId = reader.next();
 
             System.out.println("Ingrese las horas del podcast: ");
@@ -317,6 +331,11 @@ public class Main {
         return msg;
     }
 
+    /**
+     * This function is a sub menu to let the user change the playlist of a consumer user
+     * 
+     * @return A String with the result of the operation
+     */
     public String uiEditPlaylist() {
         String msg = "";
 
@@ -396,7 +415,7 @@ public class Main {
      * 
      * @return A String with the result of the operation
      */
-    private String uiChangePlaylistName() {
+    public String uiChangePlaylistName() {
         String msg = "";
 
         System.out.println("Ingrese el id del usuario: ");
@@ -409,6 +428,25 @@ public class Main {
         String newPlaylistName = reader.next();
 
         msg = controller.changePlaylistName(userId, oldPlaylistName, newPlaylistName);
+
+        return msg;
+    }
+
+    /**
+     * This function provides the user the option to know which list he wants to know its code
+     * 
+     * @return A String with the code of the playlist
+     */
+    public String uiShareCodePlaylist() {
+        String msg = "";
+
+        System.out.println("Ingrese el id del usuario: ");
+        String userId = reader.next();
+
+        System.out.println("Ingrese el nombre de la playlist: ");
+        String playlistName = reader.next();
+
+        msg = controller.sharePlaylistCode(userId, playlistName);
 
         return msg;
     }

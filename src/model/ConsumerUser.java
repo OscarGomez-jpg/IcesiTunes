@@ -11,6 +11,7 @@ public abstract class ConsumerUser extends User {
         super(nickname, id);
         this.playlists = new ArrayList<Playlist>();
         this.userAudios = new Playlist(nickname);
+        
     }
     
     /**

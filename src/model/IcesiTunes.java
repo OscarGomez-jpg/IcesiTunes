@@ -16,7 +16,7 @@ public class IcesiTunes {
      * This function returns the position of a user in the app
      * 
      * @param userId The user's id
-     * @return A int with position of the user in the array
+     * @return An int with position of the user in the array
      */
     public int searchUserById(String userId) {
         int pos = -1;
@@ -24,6 +24,27 @@ public class IcesiTunes {
 
         for (int i = 0; i < users.size() && isFound == false; i++) {
             if (users.get(i).getId().equals(userId)) {
+                pos = i;
+                isFound = true;
+            }
+        }
+
+        return pos;
+    }
+
+    /**
+     * This function returns the position of a user in the app by his name
+     * 
+     * @param userName The user's name
+     * @return An int with the position of the user in the array
+     */
+    public int searchUserByName(String userName) {
+        int pos = -1;
+
+        boolean isFound = false;
+
+        for (int i = 0; i < users.size() && isFound == false; i++) {
+            if (users.get(i).getNickname().equals(userName)) {
                 pos = i;
                 isFound = true;
             }
@@ -197,6 +218,10 @@ public class IcesiTunes {
         ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).setName(newName);
 
         return msg;
+    }
+
+    public String sharePlaylistCode(int userPos, int playlistPos) {
+        return ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).getCode();
     }
 
     public ArrayList<User> getUsers() {

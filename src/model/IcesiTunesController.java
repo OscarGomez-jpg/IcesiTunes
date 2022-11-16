@@ -97,7 +97,7 @@ public class IcesiTunesController {
     public String addAudioFile(String name, String authorsId, String url, String duration, double price, int genre) {
         String msg = "No se ha podido agregar el archivo";
 
-        int authorsPos = icesiTunes.searchUserById(authorsId);
+        int authorsPos = icesiTunes.searchUserByName(authorsId);
 
         if (authorsPos == -1) {
             msg = "No se ha podido encontrar el autor";
@@ -131,7 +131,7 @@ public class IcesiTunesController {
     public String addAudioFile(String name, String url, String authorsId, String duration, int category) {
         String msg = "No se ha podido agregar el archivo";
 
-        int authorsPos = icesiTunes.searchUserById(authorsId);
+        int authorsPos = icesiTunes.searchUserByName(authorsId);
 
         if (authorsPos == -1) {
             msg = "No se ha podido encontrar el autor";
@@ -284,4 +284,51 @@ public class IcesiTunesController {
 
         return msg;
     }
+
+    /**
+     * This function connects the share playlist code with the ui
+     * 
+     * @param userId The user's id that needs the code
+     * @param playlistName The playlist that correspond's to the user's id
+     * @return A String with the result of the operation
+     */
+    public String sharePlaylistCode(String userId, String playlistName) {
+        String msg = "No se ha podido obtener el codigo de la playlist";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            msg = "No se ha encontrado el usuario";
+            return msg;
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            msg = "Solo los usuarios consumidores tienen playlists";
+            return msg;
+        }
+
+        int playlistPos = icesiTunes.searchUserPlaylist(userId, playlistName);
+
+        if (playlistPos == -1) {
+            msg = "No se ha encontrado la playlist";
+            return msg;
+        }
+
+        msg = icesiTunes.sharePlaylistCode(userPos, playlistPos);
+
+        return msg;
+    }
+
+    public String getArtists() {
+        String msg = "";
+
+        for (User index : icesiTunes.getUsers()) {
+            if (index instanceof Artist) {
+                msg += "- " + index.getNickname() + "\n";
+            }
+        }
+
+        return msg;
+    }
+
 }
