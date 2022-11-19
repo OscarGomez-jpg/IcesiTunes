@@ -319,6 +319,26 @@ public class IcesiTunesController {
         return msg;
     }
 
+    public String buySong(String userId, String songName) {
+        String msg = "";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            return "No se ha encontrado el usuario";
+        }
+
+        int songPos = icesiTunes.searchAudioByName(songName);
+
+        if (songPos == -1) {
+            return "No se ha encontrado la cancion";
+        }
+
+        msg = icesiTunes.buySong(userPos, songPos);
+
+        return msg;
+    }
+
     public String getArtists() {
         String msg = "";
 
@@ -331,4 +351,29 @@ public class IcesiTunesController {
         return msg;
     }
 
+    public String getUserPlaylists(String userId) {
+        String msg = "";
+
+        int userPos = icesiTunes.searchUserById(userId);
+
+        if (userPos == -1) {
+            return "No se ha encontrado el usuario";
+        }
+
+        msg = icesiTunes.getUserPlaylists(userPos);
+
+        return msg;
+    }
+
+    public String getSongs() {
+        String msg = "";
+
+        for (Audio index : icesiTunes.getAudios()) {
+            if (index instanceof Song) {
+                msg += "- " + index.getName() + " Autor: " + index.getAuthor();
+            }
+        }
+
+        return msg;
+    }
 }

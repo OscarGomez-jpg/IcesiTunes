@@ -100,7 +100,7 @@ public class IcesiTunes {
      * This function receives an User by parameter and adds it to the main
      * application
      * 
-     * @param user The user to be added 
+     * @param user The user to be added
      * @return A String with the result of the operation
      */
     public String addUser(User user) {
@@ -183,6 +183,16 @@ public class IcesiTunes {
     public String addAudioToPlaylist(int userPos, int playlistPos, int audioPos) {
         String msg = "No se ha podido agregar el audio a la playlist";
 
+        Audio reqAudio = audios.get(audioPos);
+
+        boolean hasBoughtSong = ((ConsumerUser) (users.get(userPos))).getUserAudios().getSongs().contains(reqAudio);
+
+        boolean isSong = audios.get(audioPos) instanceof Song;
+
+        if (!hasBoughtSong && isSong) {
+            return "El usuario no ha comprado esta cancion";
+        }
+
         msg = ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).addAudio(audios.get(audioPos));
 
         return msg;
@@ -220,12 +230,49 @@ public class IcesiTunes {
         return msg;
     }
 
+    /**
+     * Returns the code of the playlist at the given position.
+     * 
+     * @param userPos     - the position of the user
+     * @param playlistPos - The position of the playlist.
+     */
     public String sharePlaylistCode(int userPos, int playlistPos) {
         return ((ConsumerUser) (users.get(userPos))).getPlaylists().get(playlistPos).getCode();
     }
 
+    /**
+     * This function Adds a song to the Consumer user playlist that has the same
+     * user's name
+     * 
+     * @param userPos  The user position
+     * @param audioPos The audio position
+     */
+    public String buySong(int userPos, int audioPos) {
+        String msg = "No se ha podido comprar la cancion";
+
+        Audio songToBuy = audios.get(audioPos);
+
+        if (users.get(userPos) instanceof StandardUser) {
+            msg = ((StandardUser) (users.get(userPos))).addAudio(songToBuy);
+        } else {
+            msg = ((PremiumUser) (users.get(userPos))).addAudio(songToBuy);
+        }
+
+        return msg;
+    }
+
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public String getUserPlaylists(int userPos) {
+        String msg = "";
+
+        for (Playlist index : ((ConsumerUser) (users.get(userPos))).getPlaylists()) {
+            msg += "- " + index.getName() + " Codigo: " + index.getCode() + "\n";
+        }
+
+        return msg;
     }
 
     public ArrayList<Audio> getAudios() {

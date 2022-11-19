@@ -89,6 +89,7 @@ public class Main {
                 "5. Agregar Playlist\n" +
                 "6. Editar Playlist\n" +
                 "7. Compartir Playlist\n" +
+                "8. Comprar cancion\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -128,6 +129,11 @@ public class Main {
             
             case 7:
                 msg = uiShareCodePlaylist();
+                System.out.println(msg);
+                break;
+
+            case 8: 
+                msg = uiBuySong();
                 System.out.println(msg);
                 break;
 
@@ -447,6 +453,23 @@ public class Main {
         String playlistName = reader.next();
 
         msg = controller.sharePlaylistCode(userId, playlistName);
+
+        return msg;
+    }
+
+    public String uiBuySong() {
+        String msg = "";
+
+        System.out.println("Ingrese el nombre de la cancion que desea comprar: ");
+        System.out.println(controller.getSongs());
+
+        String songName = reader.next();
+
+        System.out.println("Ingrese el id del usuario: ");
+
+        String userName = reader.next();
+
+        msg = controller.buySong(userName, songName);
 
         return msg;
     }
