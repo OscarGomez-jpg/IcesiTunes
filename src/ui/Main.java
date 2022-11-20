@@ -90,6 +90,7 @@ public class Main {
                 "6. Editar Playlist\n" +
                 "7. Compartir Playlist\n" +
                 "8. Comprar cancion\n" +
+                "9. Simular reproduccion de Audio\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -134,6 +135,11 @@ public class Main {
 
             case 8: 
                 msg = uiBuySong();
+                System.out.println(msg);
+                break;
+
+            case 9:
+                msg = uiSimulatePlayingSong();
                 System.out.println(msg);
                 break;
 
@@ -228,6 +234,7 @@ public class Main {
             String url = reader.next();
 
             System.out.println("Ingrese el nickname del artista: ");
+            System.out.println("Artistas disponibles: ");
             String producers = controller.getArtists();
             
             System.out.println(producers);
@@ -346,7 +353,7 @@ public class Main {
         String msg = "";
 
         try {
-            System.out.println("Ingrese un numero del 1 al 3: \n" +
+            System.out.println("Seleccione una opcion digitando un numero: \n" +
                     "1. Agregar archivo de audio a playlist\n" + 
                     "2. Remover archivo de audio a playlist\n" +
                     "3. Cambiar el nombre de la playlist");
@@ -384,9 +391,11 @@ public class Main {
         String userId = reader.next();
 
         System.out.println("Ingrese el nombre de la playlist: ");
+        System.out.println(controller.getUserPlaylists(userId));
         String playlistName = reader.next();
 
         System.out.println("Ingrese el nombre del audio: ");
+        System.out.println(controller.getSongs());
         String audioName = reader.next();
 
         msg = controller.addSongToPlaylist(userId, playlistName, audioName);
@@ -406,9 +415,11 @@ public class Main {
         String userId = reader.next();
 
         System.out.println("Ingrese el nombre de la playlist: ");
+        System.out.println(controller.getUserPlaylists(userId));
         String playlistName = reader.next();
 
         System.out.println("Ingrese el nombre del audio: ");
+        System.out.println(controller.getSongs());
         String audioName = reader.next();
 
         msg = controller.removeAudioFromPlaylist(userId, playlistName, audioName);
@@ -428,6 +439,7 @@ public class Main {
         String userId = reader.next();
 
         System.out.println("Ingrese el antiguo nombre de la playlist: ");
+        System.out.println(controller.getUserPlaylists(userId));
         String oldPlaylistName = reader.next();
 
         System.out.println("Ingrese el nuevo nombre de la playlist: ");
@@ -457,6 +469,11 @@ public class Main {
         return msg;
     }
 
+    /**
+     * This function provides the user the optio to buy a song for a consumer user
+     * 
+     * @return A String with the result of the operation
+     */
     public String uiBuySong() {
         String msg = "";
 
@@ -470,6 +487,19 @@ public class Main {
         String userName = reader.next();
 
         msg = controller.buySong(userName, songName);
+
+        return msg;
+    }
+
+    public String uiSimulatePlayingSong() {
+        String msg = "";
+
+        System.out.println("Ingrese el nickname del usuario: ");
+        System.out.println(controller.getUsers());
+
+        String userId = reader.next();
+
+        msg = controller.simulatePlayingAudio(userId);
 
         return msg;
     }

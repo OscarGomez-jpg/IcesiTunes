@@ -1,15 +1,18 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class IcesiTunes {
 
     private ArrayList<User> users;
     private ArrayList<Audio> audios;
+    private Random random;
 
     public IcesiTunes() {
         this.users = new ArrayList<User>();
         this.audios = new ArrayList<Audio>();
+        this.random = new Random();
     }
 
     /**
@@ -245,17 +248,72 @@ public class IcesiTunes {
      * user's name
      * 
      * @param userPos  The user position
-     * @param audioPos The audio position
+     * @param audioPos The song position
+     * 
+     * @return A String with the result of the operation
      */
     public String buySong(int userPos, int audioPos) {
         String msg = "No se ha podido comprar la cancion";
 
         Audio songToBuy = audios.get(audioPos);
 
+        if (((ConsumerUser) (users.get(userPos))).getUserAudios().getSongs().contains(songToBuy)) {
+            return "El usuario ya ha comprado esta cancion";
+        }
+
         if (users.get(userPos) instanceof StandardUser) {
             msg = ((StandardUser) (users.get(userPos))).addAudio(songToBuy);
         } else {
             msg = ((PremiumUser) (users.get(userPos))).addAudio(songToBuy);
+        }
+
+        return msg;
+    }
+
+    public String simulatePlayingAudio(int userPos) {
+        String msg = "";
+
+        User reqUser = users.get(userPos);
+
+        if (reqUser instanceof StandardUser) {
+
+            StandardUser reqStandardUser = ((StandardUser) (reqUser));
+            int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
+            int adsInterval = 2;
+
+            // This variable controls the ad intervals
+            int acuAdSongs = 0;
+
+            for (int i = 0; i < totalAudios; i++) {
+                Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
+                if (index instanceof Song) {
+                    if (acuAdSongs % adsInterval == 0) {
+                        msg += "Publicidad: " + Publicity.values()[random.nextInt(3)] + "\n";
+                    } 
+                    
+                    msg += "Nombre de la cancion: " + index.getName() + "\n";
+
+                    acuAdSongs++;
+                } else {
+                    msg += "Publicidad :" + Publicity.values()[random.nextInt(3)] + "\n";
+                    msg += "Nombre del podcast: " + index.getName() + "\n";
+                }
+            }
+        } else {
+            PremiumUser reqStandardUser = ((PremiumUser) (reqUser));
+            int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
+
+            for (int i = 0; i < totalAudios; i++) {
+                Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
+
+                String form = "de la cancion";
+
+                if (index instanceof Podcast) {
+                    form = "del podcast";
+                }
+
+                msg += "Nombre " + form + ": " + index.getName() + "\n";
+            }
         }
 
         return msg;

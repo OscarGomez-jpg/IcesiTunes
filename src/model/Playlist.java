@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Playlist {
+public class Playlist{
     public static final int TOTAL_SIZE_MATRIX = 6;
 
     private String name;
@@ -201,10 +201,10 @@ public class Playlist {
                 }
             }
         }
-
+        
         return formattedCode;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -224,4 +224,5 @@ public class Playlist {
     public int[][] getMatrix() {
         return matrix;
     }
+
 }

@@ -62,13 +62,13 @@ public class IcesiTunesController {
         switch (type) {
 
             case 1: {
-                User newConsumer = new PremiumUser(nickname, id);
+                User newConsumer = new StandardUser(nickname, id); 
                 msg = icesiTunes.addUser(newConsumer);
                 break;
             }
 
             case 2: {
-                User newConsumer = new StandardUser(nickname, id);
+                User newConsumer = new PremiumUser(nickname, id);
                 msg = icesiTunes.addUser(newConsumer);
                 break;
             }
@@ -319,6 +319,14 @@ public class IcesiTunesController {
         return msg;
     }
 
+    /**
+     * This function makes the needed validations to let the user adquire a song
+     * 
+     * @param userId User's id
+     * @param songName Song's requested name
+     * 
+     * @return A String with the result of the operation
+     */
     public String buySong(String userId, String songName) {
         String msg = "";
 
@@ -326,6 +334,10 @@ public class IcesiTunesController {
 
         if (userPos == -1) {
             return "No se ha encontrado el usuario";
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            return "Solo los usuarios consumidores pueden comprar canciones";
         }
 
         int songPos = icesiTunes.searchAudioByName(songName);
@@ -339,11 +351,53 @@ public class IcesiTunesController {
         return msg;
     }
 
+    public String simulatePlayingAudio(String userId) {
+        String msg = "No se ha podido simular la reproduccion";
+
+        int userPos = icesiTunes.searchUserByName(userId);
+
+        if (userPos == -1) {
+            return "No se ha encontrado el usuario";
+        }
+
+        if (icesiTunes.getUsers().get(userPos) instanceof ConsumerUser == false) {
+            return "Solo los usuarios consumidores pueden simular la reproduccion de una cancion";
+        }
+
+        msg = icesiTunes.simulatePlayingAudio(userPos);
+
+        return msg;
+    }
+
     public String getArtists() {
         String msg = "";
 
         for (User index : icesiTunes.getUsers()) {
             if (index instanceof Artist) {
+                msg += "- " + index.getNickname() + "\n";
+            }
+        }
+
+        return msg;
+    }
+
+    public String getContentCreators() {
+        String msg = "";
+
+        for (User index : icesiTunes.getUsers()) {
+            if (index instanceof ContentCreator) {
+                msg += "- " + index.getNickname() + "\n";
+            }
+        }
+
+        return msg;
+    }
+
+    public String getUsers() {
+        String msg = "";
+
+        for (User index : icesiTunes.getUsers()) {
+            if (index instanceof ConsumerUser) {
                 msg += "- " + index.getNickname() + "\n";
             }
         }
@@ -370,7 +424,7 @@ public class IcesiTunesController {
 
         for (Audio index : icesiTunes.getAudios()) {
             if (index instanceof Song) {
-                msg += "- " + index.getName() + " Autor: " + index.getAuthor();
+                msg += "- " + index.getName() + " Autor: " + index.getAuthor() + "\n";
             }
         }
 
