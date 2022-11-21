@@ -296,7 +296,7 @@ public class Main {
             String url = reader.next();
 
             System.out.println("Ingrese el nickname del creador de contenido: ");
-            String producers = controller.getArtists();
+            String producers = controller.getContentCreators();
 
             System.out.println(producers);
 
