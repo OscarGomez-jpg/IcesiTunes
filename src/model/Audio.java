@@ -7,12 +7,14 @@ public class Audio {
     private String url;
     private String author;
     private Duration duration;
+    private int totalPlays;
 
     public Audio(String name, String url, String author, String duration) {
         this.name = name;
         this.url = url;
         this.author = author;
         this.duration = Duration.parse(duration);
+        this.totalPlays = 0;
     }
 
     public String getName() {
@@ -47,4 +49,11 @@ public class Audio {
         this.author = author;
     }
 
+    public int getTotalPlays() {
+        return totalPlays;
+    }
+
+    public void setTotalPlays(int totalPlays) {
+        this.totalPlays = totalPlays;
+    }
 }

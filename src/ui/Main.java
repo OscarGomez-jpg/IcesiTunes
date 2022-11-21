@@ -127,19 +127,24 @@ public class Main {
                 msg = uiEditPlaylist();
                 System.out.println(msg);
                 break;
-            
+
             case 7:
                 msg = uiShareCodePlaylist();
                 System.out.println(msg);
                 break;
 
-            case 8: 
+            case 8:
                 msg = uiBuySong();
                 System.out.println(msg);
                 break;
 
             case 9:
                 msg = uiSimulatePlayingSong();
+                System.out.println(msg);
+                break;
+
+            case 10:
+                msg = uiReportData();
                 System.out.println(msg);
                 break;
 
@@ -236,7 +241,7 @@ public class Main {
             System.out.println("Ingrese el nickname del artista: ");
             System.out.println("Artistas disponibles: ");
             String producers = controller.getArtists();
-            
+
             System.out.println(producers);
 
             String authorsId = reader.next();
@@ -291,7 +296,7 @@ public class Main {
 
             System.out.println("Ingrese el nickname del creador de contenido: ");
             String producers = controller.getArtists();
-            
+
             System.out.println(producers);
 
             String authorsId = reader.next();
@@ -345,7 +350,8 @@ public class Main {
     }
 
     /**
-     * This function is a sub menu to let the user change the playlist of a consumer user
+     * This function is a sub menu to let the user change the playlist of a consumer
+     * user
      * 
      * @return A String with the result of the operation
      */
@@ -354,13 +360,13 @@ public class Main {
 
         try {
             System.out.println("Seleccione una opcion digitando un numero: \n" +
-                    "1. Agregar archivo de audio a playlist\n" + 
+                    "1. Agregar archivo de audio a playlist\n" +
                     "2. Remover archivo de audio a playlist\n" +
                     "3. Cambiar el nombre de la playlist");
 
             int selection = reader.nextInt();
 
-            switch (selection){
+            switch (selection) {
                 case 1:
                     msg = uiAddAudioToPlaylist();
                     break;
@@ -451,7 +457,8 @@ public class Main {
     }
 
     /**
-     * This function provides the user the option to know which list he wants to know its code
+     * This function provides the user the option to know which list he wants to
+     * know its code
      * 
      * @return A String with the code of the playlist
      */
@@ -491,6 +498,12 @@ public class Main {
         return msg;
     }
 
+    /**
+     * This function lets the user select the consumer user that will emulate the
+     * playing of a songF
+     * 
+     * @return A String with the result of the operation
+     */
     public String uiSimulatePlayingSong() {
         String msg = "";
 
@@ -502,5 +515,101 @@ public class Main {
         msg = controller.simulatePlayingAudio(userId);
 
         return msg;
+    }
+
+    public String uiReportData() {
+        String msg = "";
+
+        //try {
+            System.out.println("Seleccione una opcion digitando un numero: \n" +
+                    "1. Total de reproducciones de un audio\n" +
+                    "2. Genero mas escuchado\n" +
+                    "3. Top 5 Artistas\n" +
+                    "4. Top 5 Creadores de contenido\n" +
+                    "5. Top 10 Canciones\n" +
+                    "6. Top 10 Podcasts\n" +
+                    "7. Generos mas vendidos\n" +
+                    "8. Cancion mas vendida\n");
+
+            int selection = reader.nextInt();
+
+            switch (selection) {
+                case 1:
+                    msg = uiTotalPlaysAudio();
+                    break;
+                case 2:
+                    msg = uiMostListenedGenre();
+                    break;
+                case 3:
+                    msg = uiTopFiveArtist();
+                    break;
+                case 4:
+                    msg = uiTopFiveContent();
+                    break;
+                case 5:
+                    msg = uiTopTenSongs();
+                    break;
+
+                case 6:
+                    msg = uiTopTenPodcasts();
+                    break;
+
+                case 7:
+                    msg = uiSoldGenres();
+                    break;
+
+                case 8:
+                    msg = uiMostSoldSong();
+                    break;
+            }
+
+        //} catch (Exception error) {
+        //    msg = "Ingrese un valor permitido";
+        //}
+
+        return msg;
+    }
+
+    public String uiTotalPlaysAudio() {
+        String msg = "";
+
+        System.out.println("Ingrese el nombre del audio del que desea saber sus reproducciones: ");
+        String audioName = reader.next();
+
+        msg = controller.getTotalPlaysAudio(audioName);
+
+        return msg;
+    }
+
+    public String uiMostListenedGenre() {
+        String msg = "";
+
+        msg = controller.getMostListenedGenre();
+
+        return msg;
+    }
+
+    public String uiTopFiveArtist() {
+        return controller.getTopFiveArtist();
+    }
+
+    public String uiTopFiveContent() {
+        return controller.getTopFiveContent();
+    }
+
+    public String uiTopTenSongs() {
+        return controller.getTopTenSongs();
+    }
+
+    public String uiTopTenPodcasts() {
+        return controller.getTopTenPodcasts();
+    }
+
+    public String uiSoldGenres() {
+        return controller.getMostListenedGenre();
+    }
+
+    public String uiMostSoldSong() {
+        return controller.getMostSoldSong();
     }
 }

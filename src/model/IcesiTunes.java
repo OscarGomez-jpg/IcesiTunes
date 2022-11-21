@@ -1,17 +1,26 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 public class IcesiTunes {
 
     private ArrayList<User> users;
     private ArrayList<Audio> audios;
+    private HashMap<String, Integer> acuGenre;
+    private HashMap<String, Integer> acuCategory;
+    private HashMap<String, Integer> boughtSongs;
     private Random random;
 
     public IcesiTunes() {
         this.users = new ArrayList<User>();
         this.audios = new ArrayList<Audio>();
+        this.acuGenre = new HashMap<String, Integer>();
+        this.acuCategory = new HashMap<String, Integer>();
+        this.boughtSongs = new HashMap<String, Integer>();
         this.random = new Random();
     }
 
@@ -267,54 +276,296 @@ public class IcesiTunes {
             msg = ((PremiumUser) (users.get(userPos))).addAudio(songToBuy);
         }
 
+        if(boughtSongs.get(((Song) (songToBuy)).getGenre()) != null) {
+            boughtSongs.put(((Song) (songToBuy)).getGenre(), boughtSongs.get(((Song) (songToBuy)).getGenre()) + 1);
+        } else {
+            boughtSongs.put(((Song) (songToBuy)).getGenre(), 1);
+        }
+
         return msg;
     }
 
+    /**
+     * This function simulates the playing of all the songs either for a standard
+     * user as for a premium user
+     * for a standard user will return a Publicity value as an ad. The premium user
+     * wont have to watch any ad
+     * 
+     * @param userPos The user that will simulate the playing
+     * 
+     * @return A String with the sequence of the songs and the ads showed according
+     *         to the user type
+     */
     public String simulatePlayingAudio(int userPos) {
         String msg = "";
 
         User reqUser = users.get(userPos);
 
         if (reqUser instanceof StandardUser) {
+            msg = simulateStandardPlaying(reqUser);
+        } else {
+            msg = simulatePremiumPlaying(reqUser);
+        }
 
-            StandardUser reqStandardUser = ((StandardUser) (reqUser));
-            int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
-            int adsInterval = 2;
+        return msg;
+    }
 
-            // This variable controls the ad intervals
-            int acuAdSongs = 0;
+    public String simulateStandardPlaying(User reqUser) {
+        String msg = "";
 
-            for (int i = 0; i < totalAudios; i++) {
-                Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
-                if (index instanceof Song) {
-                    if (acuAdSongs % adsInterval == 0) {
-                        msg += "Publicidad: " + Publicity.values()[random.nextInt(3)] + "\n";
-                    } 
-                    
-                    msg += "Nombre de la cancion: " + index.getName() + "\n";
+        StandardUser reqStandardUser = ((StandardUser) (reqUser));
+        int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
+        int adsInterval = 2;
 
-                    acuAdSongs++;
+        // This variable controls the ad intervals
+        int acuAdSongs = 0;
+
+        for (int i = 0; i < totalAudios; i++) {
+            Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
+
+            // I add 1 to the total reproductions for the authors
+            User author = users.get(searchUserByName(index.getAuthor()));
+
+            ((ProducerUser) (author)).setTotalReproductions(((ProducerUser) (author)).getTotalReproductions() + 1);
+
+            if (index instanceof Song) {
+                if (acuAdSongs % adsInterval == 0) {
+                    msg += "Publicidad: " + Publicity.values()[random.nextInt(3)] + "\n";
+                }
+
+                msg += "Nombre de la cancion: " + index.getName() + "\n";
+
+                if (acuGenre.get(((Song) (index)).getGenre()) != null) {
+                    acuGenre.put(((Song) (index)).getGenre(), acuGenre.get(((Song) (index)).getGenre()) + 1);
                 } else {
-                    msg += "Publicidad :" + Publicity.values()[random.nextInt(3)] + "\n";
-                    msg += "Nombre del podcast: " + index.getName() + "\n";
+                    acuGenre.put(((Song) (index)).getGenre(), 1);
+                }
+
+                acuAdSongs++;
+            } else {
+                msg += "Publicidad :" + Publicity.values()[random.nextInt(3)] + "\n";
+                msg += "Nombre del podcast: " + index.getName() + "\n";
+
+                if (acuCategory.get(((Podcast) (index)).getCategory()) != null) {
+                    acuCategory.put(((Podcast) (index)).getCategory(), acuCategory.get(((Podcast) (index)).getCategory()) + 1);
+                } else {
+                    acuCategory.put(((Podcast) (index)).getCategory(), 1);
+                }
+                        
+            }
+
+            audios.get(i).setTotalPlays(audios.get(i).getTotalPlays() + 1);
+        }
+
+        return msg;
+    }
+
+    public String simulatePremiumPlaying(User reqUser) {
+        String msg = "";
+
+        PremiumUser reqStandardUser = ((PremiumUser) (reqUser));
+        int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
+
+        for (int i = 0; i < totalAudios; i++) {
+            Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
+
+            // I add 1 to the total reproductions of the author
+            User author = users.get(searchUserByName(index.getAuthor()));
+
+            ((ProducerUser) (author)).setTotalReproductions(((ProducerUser) (author)).getTotalReproductions() + 1);
+
+            String form = "";
+
+            if (index instanceof Podcast) {
+                form = "del podcast";
+                if (acuGenre.get(((Song) (index)).getGenre()) != null) {
+                    acuGenre.put(((Song) (index)).getGenre(), acuGenre.get(((Song) (index)).getGenre()) + 1);
+                } else {
+                    acuGenre.put(((Song) (index)).getGenre(), 1);
+                }
+            } else {
+                form = "de la cancion";
+                if (acuCategory.get(((Podcast) (index)).getCategory()) != null) {
+                    acuCategory.put(((Podcast) (index)).getCategory(), acuCategory.get(((Podcast) (index)).getCategory()) + 1);
+                } else {
+                    acuCategory.put(((Podcast) (index)).getCategory(), 1);
                 }
             }
-        } else {
-            PremiumUser reqStandardUser = ((PremiumUser) (reqUser));
-            int totalAudios = reqStandardUser.getUserAudios().getSongs().size();
+            audios.get(i).setTotalPlays(audios.get(i).getTotalPlays() + 1);
 
-            for (int i = 0; i < totalAudios; i++) {
-                Audio index = reqStandardUser.getUserAudios().getSongs().get(i);
+            msg += "Nombre " + form + ": " + index.getName() + "\n";
+        }
 
-                String form = "de la cancion";
+        return msg;
+    }
 
-                if (index instanceof Podcast) {
-                    form = "del podcast";
+    public String topFiveArtist() {
+        String msg = "";
+
+        int acu = 1;
+
+        int limit = 5;
+
+        User[] top = new User[limit];
+        ArrayList<Integer> deneg = new ArrayList<Integer>();
+
+        for (int i = 0; i < limit; i++) {
+            int bigger = 0;
+            for (int j = 0; j < users.size(); j++) {
+                if (users.get(j) instanceof Artist) {
+                    if (bigger < ((Artist) (users.get(j))).getTotalReproductions() && deneg.contains(j) == false) {
+                        top[i] = users.get(j);
+                        deneg.add(j);
+                        bigger = ((Artist) (users.get(j))).getTotalReproductions();
+                    }
                 }
-
-                msg += "Nombre " + form + ": " + index.getName() + "\n";
             }
         }
+
+        for (User index : top) {
+            if (index != null) {
+                msg += acu + ". Nombre: " + index.getNickname() + " total: " + ((Artist) (index)).getTotalReproductions() + "\n";
+                acu++;
+            }
+        }
+
+        return msg;
+    }
+
+    public String topFiveContent() {
+        String msg = "";
+
+        int acu = 1;
+
+        int limit = 5;
+
+        User[] top = new User[limit];
+        ArrayList<Integer> deneg = new ArrayList<Integer>();
+
+        for (int i = 0; i < limit; i++) {
+            int bigger = 0;
+            for (int j = 0; j < users.size(); j++) {
+                if (users.get(j) instanceof ContentCreator) {
+                    if (bigger < ((ContentCreator) (users.get(j))).getTotalReproductions()
+                            && deneg.contains(j) == false) {
+                        top[i] = users.get(j);
+                        deneg.add(j);
+                        bigger = ((ContentCreator) (users.get(j))).getTotalReproductions();
+                    }
+                }
+            }
+        }
+
+        for (User index : top) {
+            if (index != null) {
+                msg += acu + ". Nombre: " + index.getNickname() + " total: "
+                        + ((ProducerUser) (index)).getTotalReproductions() + "\n";
+                acu++;
+            }
+        }
+
+        return msg;
+    }
+
+    public String topTenSongs() {
+        String msg = "";
+
+        int acu = 1;
+
+        int limit = 10;
+
+        Audio[] top = new Audio[limit];
+        ArrayList<Integer> deneg = new ArrayList<Integer>();
+
+        for (int i = 0; i < limit; i++) {
+            int bigger = 0;
+            for (int j = 0; j < audios.size(); j++) {
+                if (audios.get(j) instanceof Song) {
+                    if (bigger < ((Song) (audios.get(j))).getTotalPlays() && deneg.contains(j) == false) {
+                        top[i] = audios.get(j);
+                        deneg.add(j);
+                        bigger = ((Song) (audios.get(j))).getTotalPlays();
+                    }
+                }
+            }
+        }
+
+        for (Audio index : top) {
+            if (index != null) {
+                msg += acu + ". Nombre: " + index.getName() + " total: " + ((Song) (index)).getTotalPlays() + " genero: "
+                        + ((Song) index).getGenre() + "\n";
+                acu++;
+            }
+        }
+
+        return msg;
+    }
+
+    public String topTenPodcasts() {
+        String msg = "";
+
+        int acu = 1;
+
+        int limit = 10;
+
+        Audio[] top = new Audio[limit];
+        ArrayList<Integer> deneg = new ArrayList<Integer>();
+
+        for (int i = 0; i < limit; i++) {
+            int bigger = 0;
+            for (int j = 0; j < audios.size(); j++) {
+                if (audios.get(j) instanceof Podcast) {
+                    if (bigger < ((Podcast) (audios.get(j))).getTotalPlays() && deneg.contains(j) == false) {
+                        top[i] = audios.get(j);
+                        deneg.add(j);
+                        bigger = ((Podcast) (audios.get(j))).getTotalPlays();
+                    }
+                }
+            }
+        }
+
+        for (Audio index : top) {
+            if (index != null) {
+                msg += acu + ". Nombre: " + index.getName() + " total: " + ((Podcast) (index)).getTotalPlays()
+                        + " Categoria: " + ((Podcast) index).getCategory() + "\n";
+                acu++;
+            }
+        }
+
+        return msg;
+    }
+
+    public String genresSold() {
+        String msg = "";
+
+        for (HashMap.Entry<String, Integer> entry : boughtSongs.entrySet()) {
+            msg += "-Genero: " + entry.getKey() + " veces vendido: " + entry.getValue() + "\n";
+        }
+
+        return msg;
+    }
+
+    public String mostSoldSong() {
+        Map<String, Integer> total = new HashMap<String, Integer>();
+        String msg = "";
+        String bigger = "";
+        int biggers = 0;
+
+        for (Audio audio : audios) {
+            total.put(audio.getName(), total.get(audio.getName()) + 1);
+        }
+
+        Iterator<String> it = total.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+
+            if (total.get(key) > biggers) {
+                biggers = total.get(key);
+                bigger = key;
+            }
+        }
+
+        msg = "Nombre: " + bigger + " veces vendido: " + biggers + " Precio: " + users.get(searchAudioByName(bigger)) + "\n";
 
         return msg;
     }
@@ -335,5 +586,13 @@ public class IcesiTunes {
 
     public ArrayList<Audio> getAudios() {
         return audios;
+    }
+
+    public HashMap<String, Integer> getAcuGenre() {
+        return acuGenre;
+    }
+
+    public HashMap<String, Integer> getAcuCategory() {
+        return acuCategory;
     }
 }

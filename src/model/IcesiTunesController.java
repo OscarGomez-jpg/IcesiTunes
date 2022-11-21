@@ -62,7 +62,7 @@ public class IcesiTunesController {
         switch (type) {
 
             case 1: {
-                User newConsumer = new StandardUser(nickname, id); 
+                User newConsumer = new StandardUser(nickname, id);
                 msg = icesiTunes.addUser(newConsumer);
                 break;
             }
@@ -251,11 +251,12 @@ public class IcesiTunesController {
     }
 
     /**
-     * This function verifies and returns the position of a consumer user with its playlist
+     * This function verifies and returns the position of a consumer user with its
+     * playlist
      * 
-     * @param userId The user's id
+     * @param userId       The user's id
      * @param playlistName The playlist's name
-     * @param newName The new name of the playlist
+     * @param newName      The new name of the playlist
      * @return A String with the result of the operation
      */
     public String changePlaylistName(String userId, String playlistName, String newName) {
@@ -288,7 +289,7 @@ public class IcesiTunesController {
     /**
      * This function connects the share playlist code with the ui
      * 
-     * @param userId The user's id that needs the code
+     * @param userId       The user's id that needs the code
      * @param playlistName The playlist that correspond's to the user's id
      * @return A String with the result of the operation
      */
@@ -322,7 +323,7 @@ public class IcesiTunesController {
     /**
      * This function makes the needed validations to let the user adquire a song
      * 
-     * @param userId User's id
+     * @param userId   User's id
      * @param songName Song's requested name
      * 
      * @return A String with the result of the operation
@@ -351,10 +352,17 @@ public class IcesiTunesController {
         return msg;
     }
 
-    public String simulatePlayingAudio(String userId) {
+    /**
+     * This function verifies the user id and instance, then passes it to the main
+     * application
+     * 
+     * @param UserName String with the userName
+     * @return A String with the result of the operation
+     */
+    public String simulatePlayingAudio(String UserName) {
         String msg = "No se ha podido simular la reproduccion";
 
-        int userPos = icesiTunes.searchUserByName(userId);
+        int userPos = icesiTunes.searchUserByName(UserName);
 
         if (userPos == -1) {
             return "No se ha encontrado el usuario";
@@ -365,6 +373,20 @@ public class IcesiTunesController {
         }
 
         msg = icesiTunes.simulatePlayingAudio(userPos);
+
+        return msg;
+    }
+
+    public String getTotalPlaysAudio(String audioName) {
+        String msg = "";
+
+        int audioPos = icesiTunes.searchAudioByName(audioName);
+
+        if (audioPos == -1) {
+            return "No se ha encontrado el audio";
+        }
+
+        msg = "Este audio tiene: " + icesiTunes.getAudios().get(audioPos).getTotalPlays();
 
         return msg;
     }
@@ -429,5 +451,57 @@ public class IcesiTunesController {
         }
 
         return msg;
+    }
+
+    public String getTotalPlayGenre(String genre) {
+        String msg = "";
+
+        if (icesiTunes.getAcuGenre().containsKey(genre) == false) {
+            return "No se ha encontrado este genero";
+        }
+
+        msg = "Total de reproducciones: " + icesiTunes.getAcuGenre().get(genre);
+
+        return msg;
+    }
+
+    public String getTotalPlayCategory(String category) {
+        String msg = "";
+
+        if (icesiTunes.getAcuCategory().containsKey(category) == false) {
+            return "No se ha encontrado esta categoria";
+        }
+
+        msg = "Total de reproducciones: " + icesiTunes.getAcuCategory().get(category);
+
+        return msg;
+    }
+
+    public String getMostListenedGenre() {
+        return icesiTunes.genresSold();
+    }
+
+    public String getTopFiveArtist() {
+        return icesiTunes.topFiveArtist();
+    }
+
+    public String getTopFiveContent() {
+        return icesiTunes.topFiveContent();
+    }
+
+    public String getTopTenSongs() {
+        return icesiTunes.topTenSongs();
+    }
+
+    public String getTopTenPodcasts() {
+        return icesiTunes.topTenPodcasts();
+    }
+
+    public String getSeledGenres() {
+        return icesiTunes.genresSold();
+    }
+
+    public String getMostSoldSong() {
+        return icesiTunes.mostSoldSong();
     }
 }
