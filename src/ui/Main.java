@@ -91,6 +91,7 @@ public class Main {
                 "7. Compartir Playlist\n" +
                 "8. Comprar cancion\n" +
                 "9. Simular reproduccion de Audio\n" +
+                "10.Reportar informacion\n" +
                 "0. Salir del programa.\n";
     }
 
@@ -520,7 +521,7 @@ public class Main {
     public String uiReportData() {
         String msg = "";
 
-        //try {
+        try {
             System.out.println("Seleccione una opcion digitando un numero: \n" +
                     "1. Total de reproducciones de un audio\n" +
                     "2. Genero mas escuchado\n" +
@@ -563,9 +564,9 @@ public class Main {
                     break;
             }
 
-        //} catch (Exception error) {
-        //    msg = "Ingrese un valor permitido";
-        //}
+        } catch (Exception error) {
+            msg = "Ingrese un valor permitido";
+        }
 
         return msg;
     }
