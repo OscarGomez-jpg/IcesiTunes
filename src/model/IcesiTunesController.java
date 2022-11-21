@@ -453,6 +453,18 @@ public class IcesiTunesController {
         return msg;
     }
 
+    public String getPodcasts() {
+        String msg = "";
+
+        for (Audio index : icesiTunes.getAudios()) {
+            if (index instanceof Podcast) {
+                msg += "- " + index.getName() + " Autor: " + index.getAuthor() + "\n";
+            }
+        }
+
+        return msg;
+    }
+
     public String getTotalPlayGenre(String genre) {
         String msg = "";
 

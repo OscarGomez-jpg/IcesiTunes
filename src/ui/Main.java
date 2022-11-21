@@ -403,6 +403,7 @@ public class Main {
 
         System.out.println("Ingrese el nombre del audio: ");
         System.out.println(controller.getSongs());
+        System.out.println(controller.getPodcasts());
         String audioName = reader.next();
 
         msg = controller.addSongToPlaylist(userId, playlistName, audioName);
