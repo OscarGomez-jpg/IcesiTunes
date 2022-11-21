@@ -111,7 +111,7 @@ public class IcesiTunesController {
 
         String author = ((Artist) (icesiTunes.getUsers().get(authorsPos))).getName();
 
-        Audio newAudio = new Song(name, author, url, duration, price, genre);
+        Audio newAudio = new Song(name, author, url, duration, price, genre - 1);
 
         msg = icesiTunes.addAudioFile(newAudio);
 
@@ -145,7 +145,7 @@ public class IcesiTunesController {
 
         String author = ((ContentCreator) (icesiTunes.getUsers().get(authorsPos))).getName();
 
-        Audio newAudio = new Podcast(name, url, author, duration, category);
+        Audio newAudio = new Podcast(name, url, author, duration, category - 1);
 
         msg = icesiTunes.addAudioFile(newAudio);
 
