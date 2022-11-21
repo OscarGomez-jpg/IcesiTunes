@@ -553,10 +553,12 @@ public class IcesiTunes {
         int biggers = 0;
 
         for (Audio audio : audios) {
-            if (total.get(audio.getName()) != null) {
-                total.put(audio.getName(), total.get(audio.getName()) + 1);
-            } else {
-                total.put(audio.getName(), 1);
+            if (audio instanceof Song) {
+                if (total.get(audio.getName()) != null) {
+                    total.put(audio.getName(), total.get(audio.getName()) + 1);
+                } else {
+                    total.put(audio.getName(), 1);
+                }
             }
         }
 
