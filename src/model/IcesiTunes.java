@@ -378,17 +378,18 @@ public class IcesiTunes {
 
             if (index instanceof Podcast) {
                 form = "del podcast";
-                if (acuGenre.get(((Song) (index)).getGenre()) != null) {
-                    acuGenre.put(((Song) (index)).getGenre(), acuGenre.get(((Song) (index)).getGenre()) + 1);
-                } else {
-                    acuGenre.put(((Song) (index)).getGenre(), 1);
-                }
-            } else {
-                form = "de la cancion";
                 if (acuCategory.get(((Podcast) (index)).getCategory()) != null) {
                     acuCategory.put(((Podcast) (index)).getCategory(), acuCategory.get(((Podcast) (index)).getCategory()) + 1);
                 } else {
                     acuCategory.put(((Podcast) (index)).getCategory(), 1);
+                }
+                
+            } else {
+                form = "de la cancion";
+                if (acuGenre.get(((Song) (index)).getGenre()) != null) {
+                    acuGenre.put(((Song) (index)).getGenre(), acuGenre.get(((Song) (index)).getGenre()) + 1);
+                } else {
+                    acuGenre.put(((Song) (index)).getGenre(), 1);
                 }
             }
             audios.get(i).setTotalPlays(audios.get(i).getTotalPlays() + 1);
